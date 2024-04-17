@@ -20,11 +20,26 @@ namespace pryMolina
 
         private void frmJuego_Load(object sender, EventArgs e)
         {
+            
+        }
+
+        private void frmJuego_KeyDown(object sender, KeyEventArgs e)
+        {
+           
+        }
+
+        private void frmJuego_Load_1(object sender, EventArgs e)
+        {
             objNaveJugador = new clsNave();
 
 
             objNaveJugador.crearJugador();
-            objNaveJugador.imgNave.Location = new Point(300, 600);
+            objNaveJugador.imgNave.Location = new Point(200, 200);
+
+            
+            objNaveJugador.imgNave.BackColor = Color.White;
+
+            objNaveJugador.imgNave.BringToFront();
             Controls.Add(objNaveJugador.imgNave);
 
             Random rnd = new Random();
@@ -51,45 +66,48 @@ namespace pryMolina
             }
         }
 
-        private void frmJuego_KeyDown(object sender, KeyEventArgs e)
+        private void frmJuego_KeyDown_1(object sender, KeyEventArgs e)
         {
-            int limiteDerecho = this.Width - objNaveJugador.imgNave.Width; // Límite derecho del formulario
-            int limiteInferior = this.Height - objNaveJugador.imgNave.Height; // Límite inferior del formulario
+            int limiteDerecho = this.ClientSize.Width - objNaveJugador.imgNave.Width; // Límite derecho del formulario
 
-            if (e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right && objNaveJugador.imgNave.Location.X < limiteDerecho)
             {
-                if (objNaveJugador.imgNave.Location.X < limiteDerecho)
-                {
-                    objNaveJugador.imgNave.Location = new Point(
-                        objNaveJugador.imgNave.Location.X + 5,
-                        objNaveJugador.imgNave.Location.Y);
-                }
+                objNaveJugador.imgNave.Location = new Point(
+                    Math.Min(objNaveJugador.imgNave.Location.X + 5, limiteDerecho),
+                    this.ClientSize.Height - objNaveJugador.imgNave.Height); // Mantener la nave en la parte inferior
             }
-            if (e.KeyCode == Keys.Left)
+            else if (e.KeyCode == Keys.Left && objNaveJugador.imgNave.Location.X > 0)
             {
-                if (objNaveJugador.imgNave.Location.X > 0)
-                {
-                    objNaveJugador.imgNave.Location = new Point(
-                        objNaveJugador.imgNave.Location.X - 5,
-                        objNaveJugador.imgNave.Location.Y);
-                }
+                objNaveJugador.imgNave.Location = new Point(
+                    Math.Max(objNaveJugador.imgNave.Location.X - 5, 0),
+                    this.ClientSize.Height - objNaveJugador.imgNave.Height); // Mantener la nave en la parte inferior
             }
-            if (e.KeyCode == Keys.Down)
+
+            if (e.KeyCode == Keys.Space) // Tecla de espacio para disparar
             {
-                if (objNaveJugador.imgNave.Location.Y < limiteInferior)
-                {
-                    objNaveJugador.imgNave.Location = new Point(
-                        objNaveJugador.imgNave.Location.X,
-                        objNaveJugador.imgNave.Location.Y + 5);
-                }
+                objNaveJugador.disparar(); // Disparar desde la nave del jugador
             }
-            if (e.KeyCode == Keys.Up)
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            objNaveJugador = new clsNave();
+            objNaveJugador.disparar();
+            PictureBox disparos = new PictureBox();
+            PictureBox explo = new PictureBox();
+            Controls.Add(disparos);
+
+            if(disparos.Location.Y >0)
             {
-                if (objNaveJugador.imgNave.Location.Y > 0)
+                if(disparos.Bounds.IntersectsWith(explo.Bounds))
                 {
-                    objNaveJugador.imgNave.Location = new Point(
-                        objNaveJugador.imgNave.Location.X,
-                        objNaveJugador.imgNave.Location.Y - 5);
+                    disparos.Dispose();
+
+
+                }
+                else
+                {
+                    disparos.Location= new Point(disparos.Location.X, disparos.Location.Y - 15);
                 }
             }
         }

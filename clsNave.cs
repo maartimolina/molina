@@ -15,6 +15,8 @@ namespace pryMolina
         int puntosDaños;
         public PictureBox imgNave;
         public PictureBox imgEne;
+        public List<PictureBox> disparos = new List<PictureBox>(); // Lista para almacenar los disparos
+        public PictureBox explo;
 
         public void crearJugador()
         {
@@ -24,6 +26,7 @@ namespace pryMolina
             imgNave = new PictureBox();
             imgNave.SizeMode = PictureBoxSizeMode.StretchImage;
             imgNave.ImageLocation = "https://steamuserimages-a.akamaihd.net/ugc/3336348870692605210/2DB65000D1AE5B34BCEC2E3E91A27537B3EFC057/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true";
+            imgNave.Size = new Size(50, 50);
         }
         public void crearEnemigo(int tipo)
         {
@@ -64,6 +67,21 @@ namespace pryMolina
                 default:
                     break;
             }
+        }
+        public void disparar()
+        {
+            PictureBox disparo = new PictureBox();
+            disparo.SizeMode = PictureBoxSizeMode.StretchImage;
+            disparo.ImageLocation = "https://toppng.com/uploads/thumbnail/alaga-galaga-missile-11562887504dfmxt6dqa0.png";
+            disparo.Size = new Size(20, 20); // Tamaño del disparo
+            disparo.Location = new Point(imgNave.Location.X + imgNave.Width / 2 - disparo.Width / 2, imgNave.Location.Y); // Posición inicial del disparo
+            disparos.Add(disparo); // Agregar el disparo a la lista
+            Form.ActiveForm.Controls.Add(disparo);
+
+            PictureBox explo = new PictureBox();
+            disparo.SizeMode = PictureBoxSizeMode.StretchImage;
+            disparo.ImageLocation = "https://64.media.tumblr.com/be7d736a22463bab1d67e611d864b5bd/tumblr_mlhg9xoGMm1sn65iqo1_r1_500.gifv";
+
         }
     }
 }
