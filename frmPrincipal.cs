@@ -12,5 +12,10 @@ namespace pryMolina
             Form Lienzo = new frmJuego();
             Lienzo.Show();
         }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

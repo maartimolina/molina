@@ -20,12 +20,12 @@ namespace pryMolina
 
         private void frmJuego_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void frmJuego_KeyDown(object sender, KeyEventArgs e)
         {
-           
+
         }
 
         private void frmJuego_Load_1(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace pryMolina
             objNaveJugador.crearJugador();
             objNaveJugador.imgNave.Location = new Point(200, 200);
 
-            
+
             objNaveJugador.imgNave.BackColor = Color.White;
 
             objNaveJugador.imgNave.BringToFront();
@@ -91,25 +91,40 @@ namespace pryMolina
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            objNaveJugador = new clsNave();
-            objNaveJugador.disparar();
-            PictureBox disparos = new PictureBox();
-            PictureBox explo = new PictureBox();
-            Controls.Add(disparos);
-
-            if(disparos.Location.Y >0)
+            MoverDisparos();
+            //DetectarColisiones();
+        }
+        private void MoverDisparos()
+        {
+            for (int i = objNaveJugador.disparos.Count - 1; i >= 0; i--)
             {
-                if(disparos.Bounds.IntersectsWith(explo.Bounds))
+                PictureBox disparo = objNaveJugador.disparos[i];
+                disparo.Location = new Point(disparo.Location.X, disparo.Location.Y - 15); // Mover hacia arriba
+                if (disparo.Location.Y < 0)
                 {
-                    disparos.Dispose();
-
-
-                }
-                else
-                {
-                    disparos.Location= new Point(disparos.Location.X, disparos.Location.Y - 15);
+                    disparo.Dispose(); // Eliminar si sale de la pantalla
+                    objNaveJugador.disparos.RemoveAt(i); // Eliminar de la lista también
                 }
             }
         }
+
+        private void DetectarColisiones()
+        {
+            foreach (PictureBox disparo in objNaveJugador.disparos)
+            {
+                foreach (Control control in Controls)
+                {
+                    if (control is PictureBox && control != objNaveJugador.imgNave && control.Bounds.IntersectsWith(disparo.Bounds))
+                    {
+                        objNaveJugador.crearExplosion(control.Location); // Crear explosión en la posición del enemigo
+                        disparo.Dispose(); // Eliminar el disparo
+                        objNaveJugador.disparos.Remove(disparo); // Eliminar de la lista también
+                        control.Dispose(); // Eliminar el enemigo
+                        return; // Salir de la detección de colisiones para evitar excepciones de modificación de la colección
+                    }
+                }
+            }
+        }
+
     }
 }

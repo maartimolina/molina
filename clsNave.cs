@@ -16,7 +16,7 @@ namespace pryMolina
         public PictureBox imgNave;
         public PictureBox imgEne;
         public List<PictureBox> disparos = new List<PictureBox>(); // Lista para almacenar los disparos
-        public PictureBox explo;
+        public List<PictureBox> explosiones = new List<PictureBox>(); // Lista para almacenar las explosiones
 
         public void crearJugador()
         {
@@ -68,20 +68,27 @@ namespace pryMolina
                     break;
             }
         }
+        PictureBox disparo;
         public void disparar()
         {
-            PictureBox disparo = new PictureBox();
+            disparo = new PictureBox();
             disparo.SizeMode = PictureBoxSizeMode.StretchImage;
             disparo.ImageLocation = "https://toppng.com/uploads/thumbnail/alaga-galaga-missile-11562887504dfmxt6dqa0.png";
             disparo.Size = new Size(20, 20); // Tamaño del disparo
             disparo.Location = new Point(imgNave.Location.X + imgNave.Width / 2 - disparo.Width / 2, imgNave.Location.Y); // Posición inicial del disparo
             disparos.Add(disparo); // Agregar el disparo a la lista
             Form.ActiveForm.Controls.Add(disparo);
+        }
 
-            PictureBox explo = new PictureBox();
-            disparo.SizeMode = PictureBoxSizeMode.StretchImage;
-            disparo.ImageLocation = "https://64.media.tumblr.com/be7d736a22463bab1d67e611d864b5bd/tumblr_mlhg9xoGMm1sn65iqo1_r1_500.gifv";
-
+        public void crearExplosion(Point location)
+        {
+            PictureBox explosion = new PictureBox();
+            explosion.SizeMode = PictureBoxSizeMode.StretchImage;
+            explosion.ImageLocation = "https://64.media.tumblr.com/be7d736a22463bab1d67e611d864b5bd/tumblr_mlhg9xoGMm1sn65iqo1_r1_500.gifv";
+            explosion.Size = new Size(50, 50); // Tamaño de la explosión
+            explosion.Location = location;
+            explosiones.Add(explosion); // Agregar la explosión a la lista
+            Form.ActiveForm.Controls.Add(explosion);
         }
     }
 }
