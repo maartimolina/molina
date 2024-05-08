@@ -7,10 +7,15 @@ namespace pryMolina
             InitializeComponent();
         }
 
-        private void firmaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void btnFirma_Click(object sender, EventArgs e)
         {
-            Form Mandar = new frmFirma();
-            Mandar.ShowDialog();
+            Form Firma = new frmFirma();
+            Firma.ShowDialog();
+        }
+
+        private void btnJuego_Click(object sender, EventArgs e)
+        {
+        
         }
     }
 }
